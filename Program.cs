@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Dynamic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 class Planet
 {
 
@@ -14,16 +15,17 @@ class Planet
     private string distance;
     private string moons;
 
-    /*private Planet(string name, string mass, string distance, string moons)
+    [JsonConstructor]
+    private Planet(string name, string mass, string distance, string moons)
     {
         this.name = name;
         this.mass = mass;
         this.distance = distance;
         this.moons = moons;
 
-    }*/
+    }
 
-    public string Name
+    public string Name 
     {
         get
         {
@@ -68,6 +70,7 @@ class Planet
             moons = value;
         }
     }
+
    /* public static void WriteToJson() // used for figuring out how json is formatted / testing
     {
         Planet mercury = new Planet("mercury","heavy","far","probably some");  
@@ -95,17 +98,39 @@ class Planet
         string planetstring = JsonSerializer.Serialize(planetlist);
         Console.WriteLine(planetstring);
     }*/
-    public static Planet ReadFromJson(string planet)
+    public static Planet ReadFromJson(string planet) // reads a json file and returnes a Planet object
     {
-        StreamReader planetjson = new StreamReader(planet);
-        string jsonString = planetjson.ReadLine();
-        Planet planetObject = JsonSerializer.Deserialize<Planet>(jsonString);
-        return planetObject;
+        Planet unknown = new Planet("n/a","n/a","n/a","n/a");
+        StreamReader planetJson = new StreamReader(planet);
+        string? jsonString = planetJson.ReadLine();
+        try
+        {   
+            Planet? planetObject = JsonSerializer.Deserialize<Planet>(jsonString);
+            
+            if(planetObject != null)
+            {
+                return planetObject;
+            }
+            else
+            {
+                return unknown;
+            }
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine("Exception: "+ e.Message);
+            return unknown;
+
+        }
+        finally
+        {
+            planetJson.Close();
+        }
     }
 
-    public void PrintPlanetName() 
+    public void PrintPlanetName() // just prints "Planet name is "name" "
     {
-        Console.WriteLine($"Planet name is {name}");
+        Console.WriteLine($"---{name}---");
     }
 
 }
@@ -114,14 +139,18 @@ class MenuSystem
 
     public static void TitleMenuPrint() // Prints Welcome and waits for any input to continue
     {
-        Console.WriteLine("Welcome to my solar system project\nPress any key to continue");
+        Console.WriteLine("---Welcome to my solar system project---\n       Press any key to continue");
         Console.ReadLine();
     }
-    private static void PlanetSelectorMenuPrint() // Prints an ordered list of planets
+    private static void UserFarewellPrint() // Prints a message to use when user terminates program
     {
-        Console.WriteLine("1. Mercury\n2. Venus\n3. Earth\n4. Mars\n5. Jupiter\n6. Saturn\n7. Uranus\n8. Neptune\n9. quit");
+        Console.WriteLine("cya l8r");
     }
-    private static void PlanetInfoMenuPrint() // Prints an ordered list of planet info options
+    private static void PlanetSelectorMenuPrint() // Prints an ordered list of planets used in PlanetSelector method
+    {
+        Console.WriteLine("--Planets--\n\n1. Mercury\n2. Venus\n3. Earth\n4. Mars\n5. Jupiter\n6. Saturn\n7. Uranus\n8. Neptune\n9. quit");
+    }
+    private static void PlanetInfoMenuPrint() // Prints an ordered list of planet info options used in PlanetInfoSelector method
     {
         Console.WriteLine("1. Mass\n2. Distance from Sun\n3. Moons\n4. select a different planet\n5. quit");
     }
@@ -177,7 +206,11 @@ class MenuSystem
                     break;
                 case 9:
                     //code to exit
+                    UserFarewellPrint();
                     break;
+                default:
+                    Console.WriteLine("invalid selection");
+                    continue;
             }
             break;
 
@@ -185,6 +218,7 @@ class MenuSystem
     }
     private static void PlanetInfoSelector(Planet Planet) // second level of the menu system
     {
+        Planet.PrintPlanetName();
         PlanetInfoMenuPrint();
 
         while(true)
@@ -195,22 +229,28 @@ class MenuSystem
             {
                 case 1:
                     //code for mass
-                    Console.WriteLine(Planet.Mass);
+                    Console.WriteLine($"{Planet.Name} is {Planet.Mass}");
                     continue;
                 case 2:
                     //code for distance
-                    Console.WriteLine(Planet.Distance);
+                    Console.WriteLine($"{Planet.Name} is {Planet.Distance}");
                     continue;
                 case 3:
                     //code for moons
-                    Console.WriteLine(Planet.Moons);
+                    Console.WriteLine($"{Planet.Name} has {Planet.Moons}");
                     continue;
                 case 4:
                     //code to go back
                     MenuSystem.PlanetSelector();
                     break;
                 case 5:
+                    //code to exit
+                    UserFarewellPrint();
                     break;
+                default:
+                    Console.WriteLine("invalid selection");
+                    continue;
+
             }
             break;
         }
