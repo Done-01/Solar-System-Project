@@ -1,0 +1,52 @@
+[
+    {
+        "Name" : "Mercury",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon 2"]
+    },
+    {
+        "Name" : "Venus",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon 2"]
+    },
+    {
+        "Name" : "Earth",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon 2"]
+    },
+    {
+        "Name" : "Mars",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon 2"]
+    },
+    {
+        "Name" : "Jupiter",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon2"]
+    },
+    {
+        "Name" : "Saturn",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon2"]
+    },
+    {
+        "Name" : "Uranus",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon2"]
+    },
+    {
+        "Name" : "Neptune",
+        "Mass" : "Heavy",
+        "Distance" : "far",
+        "Moons" : ["moon","moon2"]
+    }
+
+    
+]
